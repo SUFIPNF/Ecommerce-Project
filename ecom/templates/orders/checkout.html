@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<section class="section-content padding-y bg">
+    <div class="container">
+    
+    <!-- ============================ COMPONENT 1 ================================= -->
+    
+    <div class="row">
+        <aside class="col-lg-6">
+            <h1>Billing Address</h1><br>
+              <form method="POST" action="{% url 'checkout' %}">
+                {% csrf_token %}
+            
+                <div class="form-row">
+                  <div class="col form-group">
+                      <label>First name</label>
+                        <input type="text" name="fname" class="form-control" placeholder="">
+                  </div> <!-- form-group end.// -->
+                  <div class="col form-group">
+                      <label>Last name</label>
+                        <input type="text" name="lname" class="form-control" placeholder="">
+                  </div> <!-- form-group end.// -->
+              </div> <!-- form-row end.// -->
+                <div class="form-row">
+                <div class="col form-group">
+                  <label for="validationCustomUsername" class="form-label">phone</label>
+                  <div class="input-group has-validation">
+                    <input type="text" name="phone" class="form-control" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
+                    
+                    </div>
+                  </div>
+                
+                  <div class="col form-group">
+                    <label for="validationCustomUsername" class="form-label">email</label>
+                    <div class="input-group has-validation">
+                      <input type="email" name="email" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                      
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                  <div class="col form-group">
+                      <label for="validationCustom03" class="form-label">City</label>
+                      <input type="text" name="city" class="form-control" id="validationCustom03" required>
+                    
+                    </div>
+                  
+    
+                  <div class="col form-group">
+                      <label for="validationCustom03" class="form-label">State</label>
+                      <input type="text" name="state" class="form-control" id="validationCustom03" required>
+                    
+                    </div>
+                  
+
+                  <div class="col form-group">
+                      <label for="validationCustom03" class="form-label">Country</label>
+                      <input type="text" name="country" class="form-control" id="validationCustom03" required>
+                    
+                    </div>
+                  </div>
+
+                <div class="col-md-6">
+                    <label for="validationCustom03" class="form-label">Address Line 1</label>
+                    <textarea  name="add_line_1" rows="3" cols="60"></textarea>
+                  <div class="invalid-feedback">
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                    <label for="validationCustom03" class="form-label">Address line 2</label>
+                    <textarea  name="add_line_2" rows="3" cols="60" ></textarea>
+                  <div class="invalid-feedback">
+                  </div>
+                </div>
+              
+                <div class="col-md-3">
+                    <label for="validationCustom05" class="form-label">Order Note</label>
+                    <textarea rows="3" cols="60" name="order_note"></textarea>
+                  <div class="invalid-feedback">
+                  </div>
+                </div>
+              
+        </aside> <!-- col.// -->
+        
+     
+        <aside class="col-lg-6">
+          <div class="card">
+              <form method="POST" action="{% url 'checkout' %}">
+                  {% csrf_token %}
+                  <table class="table table-borderless table-shopping-cart">
+                      <thead class="text-muted">
+                          <tr class="small text-uppercase">
+                              <th scope="col">Product</th>
+                              <th scope="col" width="120">Quantity</th>
+                              <th scope="col" width="120">Price</th>
+                              <th scope="col" class="text-right" width="200"> </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for cart_item in cart_items %}
+                          <tr>
+                              <td>
+                                  <figure class="itemside align-items-center">
+                                      <div class="aside"><img src="{{cart_item.cart_item.image.url}}" class="img-sm"></div>
+                                      <figcaption class="info">
+                                          <a href="#" class="title text-dark">{{cart_item.cart_item.name}}</a>
+                                          {% if cart_item.variations.all %}
+                                          {% for variation in cart_item.variations.all %}
+                                          <p class="text-muted small">{{variation.variation_category}}:{{variation.variation_value}} </p>
+                                          {% endfor %}
+                                          {% endif %}
+                                      </figcaption>
+                                  </figure>
+                              </td>
+                              <td> 
+                                  <div class="col"> 
+                                      <div class="input-group input-spinner">
+                                          <div class="input-group-prepend">
+                                              <input type="text" class="form-control"  value="{{cart_item.quantity}}">
+                                          </div>
+                                      </div> <!-- input-group.// -->
+                                  </div> <!-- col.// -->
+                              </td>
+                              <td> 
+                                  <div class="price-wrap"> 
+                                      <var class="price">{{cart_item.sub_total}}</var> 
+                                      <small class="text-muted">{{cart_item.cart_item.price}} each</small>  
+                                  </div> <!-- price-wrap .// -->
+                              </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+                  <div class="card-body">
+                      <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+                      <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                  </div> <!-- card-body.// -->
+              </form>
+          </div> <!-- card.// -->
+      </aside> <!-- col.// -->
+      
+    
+    
+    </div> <!-- row.// -->
+    <!-- ============================ COMPONENT 1 END .// ================================= -->
+    
+    </div> <!-- container .//  -->
+    </section>
+
+{% endblock %}
